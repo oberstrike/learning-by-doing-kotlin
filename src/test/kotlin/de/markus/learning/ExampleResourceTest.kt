@@ -1,4 +1,4 @@
-package org.acme.resteasy
+package de.markus.learning
 
 import io.quarkus.test.junit.QuarkusTest
 import io.restassured.RestAssured.given
@@ -8,13 +8,13 @@ import org.junit.jupiter.api.Test
 @QuarkusTest
 class ExampleResourceTest {
 
-    @Test
+
+
+   @Test
     fun testHelloEndpoint() {
-        given()
-          .`when`().get("/resteasy/hello")
-          .then()
-             .statusCode(200)
-             .body(`is`("hello"))
+
     }
+
+
 
 }
