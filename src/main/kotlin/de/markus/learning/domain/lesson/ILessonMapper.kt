@@ -3,6 +3,7 @@ package de.markus.learning.domain.lesson
 import de.markus.learning.domain.util.IMapper
 import de.markus.learning.domain.util.convertDTOsToModels
 import de.markus.learning.domain.util.convertModelsToDTOs
+import de.markus.learning.domain.word.WordDTO
 import de.markus.learning.domain.word.WordMapper
 import org.bson.types.ObjectId
 import javax.enterprise.context.ApplicationScoped
@@ -10,9 +11,9 @@ import javax.enterprise.context.ApplicationScoped
 @ApplicationScoped
 class LessonMapper(
         private val wordMapper: WordMapper
-) : IMapper<Lesson, LessonDTO> {
+) : IMapper<Lesson, ILessonDTO> {
 
-    override fun convertDTOToModel(dto: LessonDTO): Lesson {
+    override fun convertDTOToModel(dto: ILessonDTO): Lesson {
         return Lesson(
                 name = dto.name
         ).apply {
@@ -21,11 +22,11 @@ class LessonMapper(
         }
     }
 
-    override fun convertModelToDTO(model: Lesson): LessonDTO {
+    override fun convertModelToDTO(model: Lesson): ILessonDTO {
         return LessonDTO(
                 id = model.id.toString(),
                 name = model.name,
-                words = if (model.words.isNotEmpty()) wordMapper.convertModelsToDTOs(model.words).toTypedArray() else emptyArray()
+                words = if (model.words.isNotEmpty()) wordMapper.convertModelsToDTOs(model.words).map { it as WordDTO }.toTypedArray() else emptyArray()
         )
     }
 

@@ -1,17 +1,28 @@
 package de.markus.learning.domain.lesson
 
+import de.markus.learning.domain.util.Indexable
 import de.markus.learning.domain.word.IWordDTO
+import de.markus.learning.domain.word.WordDTO
+import org.eclipse.microprofile.openapi.annotations.media.Schema
+import kotlin.math.max
 
-interface ILessonDTO {
-    val id: String?
+@Schema(name = "Lesson")
+interface ILessonDTO : Indexable {
+
+    @get:Schema(maxLength = 24)
+    override val id: String?
+
+    @get:Schema(required = true, maxLength = 24)
     val name: String
-    val words: Array<IWordDTO>
+
+    @get:Schema(maxItems = 100)
+    val words: Array<WordDTO>
 }
 
 data class LessonDTO(
         override val id: String?,
         override val name: String,
-        override val words: Array<IWordDTO>
+        override val words: Array<WordDTO>
 ) : ILessonDTO {
 
     override fun equals(other: Any?): Boolean {

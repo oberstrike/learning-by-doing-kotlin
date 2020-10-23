@@ -10,7 +10,7 @@ interface ILesson {
     var words: List<Word>
 }
 
-@MongoEntity
+@MongoEntity(collection = "lesson")
 data class Lesson(
         override var name: String = "",
         @BsonProperty

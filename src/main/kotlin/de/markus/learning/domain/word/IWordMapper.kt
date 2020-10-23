@@ -4,7 +4,7 @@ import de.markus.learning.domain.util.IMapper
 import org.bson.types.ObjectId
 import javax.enterprise.context.ApplicationScoped
 
-interface IWordMapper: IMapper<Word, IWordDTO>
+interface IWordMapper : IMapper<Word, IWordDTO>
 
 @ApplicationScoped
 class WordMapper : IWordMapper {
@@ -24,7 +24,7 @@ class WordMapper : IWordMapper {
                 type = dto.type,
                 translations = dto.translations.toList()
         ).apply {
-            if (dto.id != null) id = ObjectId(dto.id)
+            if (dto.id != null && ObjectId.isValid(dto.id)) id = ObjectId(dto.id)
         }
     }
 

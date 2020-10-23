@@ -1,12 +1,16 @@
 package de.markus.learning.domain.util
 
+import arrow.core.right
+import com.ibm.asyncutil.util.Either.right
+import com.ibm.asyncutil.util.Either.left
 import com.ibm.asyncutil.util.Either
+import de.markus.learning.domain.word.IWordDTO
+import de.markus.learning.domain.word.Word
+import de.markus.learning.domain.word.WordDTO
 import io.quarkus.mongodb.panache.PanacheMongoEntity
 import io.quarkus.mongodb.panache.PanacheMongoRepository
 import io.quarkus.panache.common.Page
 import org.bson.types.ObjectId
-import javax.enterprise.inject.Default
-import javax.inject.Inject
 import javax.ws.rs.BadRequestException
 import javax.ws.rs.NotFoundException
 
@@ -15,30 +19,45 @@ interface IService<T> {
     fun delete(dto: T): Exception?
     fun findAll(index: Int, size: Int): List<T>
     fun findById(id: String): Either<T, String>
+    fun put(dto: T): Either<T, String>
 }
 
+interface Validator<T> {
+    fun isValid(obj: T): Boolean
+}
 
-abstract class AbstractService<T : PanacheMongoEntity, U>: IService<U> {
+class WordValidator : Validator<IWordDTO> {
+    override fun isValid(obj: IWordDTO): Boolean {
+        return true
+    }
+}
+
+abstract class AbstractService<T : PanacheMongoEntity, U : Indexable> : IService<U> {
 
     abstract val mapper: IMapper<T, U>
     abstract val repository: PanacheMongoRepository<T>
+    abstract val validator: Validator<U>
 
-    override fun save(dto: U): Either<U, String> {
+    private fun <S> whenValid(dto: U, block: (dto: U) -> S): S {
+        return block.invoke(dto)
+    }
+
+    override fun save(dto: U): Either<U, String> = whenValid(dto) {
         val word = mapper.convertDTOToModel(dto)
-        return try {
+        try {
             repository.persist(word)
-            Either.left(mapper.convertModelToDTO(word))
+            left(mapper.convertModelToDTO(word))
         } catch (e: Exception) {
-            Either.right("There was an error while saving")
+            right("There was an error while saving")
         }
     }
 
-    override fun delete(dto: U): Exception? {
+    override fun delete(dto: U): Exception? = whenValid(dto) {
         val model = mapper.convertDTOToModel(dto)
         val original = repository.findByIdOptional(model.id)
-        if (original.isEmpty) return NotFoundException("No word with the id ${model.id} was found")
+        if (original.isEmpty) return@whenValid NotFoundException("No word with the id ${model.id} was found")
 
-        return try {
+        return@whenValid try {
             repository.delete(model)
             null
         } catch (e: Exception) {
@@ -55,13 +74,24 @@ abstract class AbstractService<T : PanacheMongoEntity, U>: IService<U> {
     }
 
     override fun findById(id: String): Either<U, String> {
-        val optional = repository
-                .findByIdOptional(ObjectId(id))
+        if (!ObjectId.isValid(id))
+            return right("The id is not valid.")
+
+        val optional = repository.findByIdOptional(ObjectId(id))
         return if (optional.isPresent)
-            Either.left(optional.get().let { mapper.convertModelToDTO(it) })
+            left(optional.get().let { mapper.convertModelToDTO(it) })
         else
-            Either.right("No Word with id $id was found")
+            right("No Word with id $id was found")
     }
 
+    override fun put(dto: U): Either<U, String> = whenValid(dto) {
+
+        if (!ObjectId.isValid(dto.id)) return@whenValid right("The id is not valid.")
+
+        val model = mapper.convertDTOToModel(dto)
+        repository.persistOrUpdate(model)
+
+        return@whenValid left(mapper.convertModelToDTO(model))
+    }
 
 }

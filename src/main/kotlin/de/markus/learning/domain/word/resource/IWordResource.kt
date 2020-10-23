@@ -1,12 +1,13 @@
 package de.markus.learning.domain.word.resource
 
-import de.markus.learning.domain.word.IWordDTO
+import de.markus.learning.domain.word.WordDTO
 import org.eclipse.microprofile.openapi.annotations.media.Content
 import org.eclipse.microprofile.openapi.annotations.media.Schema
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponse
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponses
 import org.eclipse.microprofile.openapi.annotations.tags.Tag
 import org.eclipse.microprofile.openapi.annotations.tags.Tags
+import javax.validation.Valid
 import javax.ws.rs.*
 import javax.ws.rs.core.MediaType
 
@@ -14,7 +15,6 @@ import javax.ws.rs.core.MediaType
  * @author Markus Jürgens
  * @since 21.10.2020
  */
-
 
 
 @Path("/api/word")
@@ -25,17 +25,45 @@ interface IWordResource {
 
     @GET
     @Produces("application/json")
-    fun getWordsByQueue(
+    @APIResponses(
+            value = [
+                APIResponse(
+                        responseCode = "200",
+                        description = "Get a word by queue",
+                        content = arrayOf(
+                                Content(
+                                        mediaType = MediaType.APPLICATION_JSON,
+                                        schema = Schema(implementation = WordDTO::class)
+                                )
+                        )
+                ),
+                APIResponse(
+                        responseCode = "400",
+                        description = "There was a error while searching",
+                        content = arrayOf(
+                                Content(
+                                        mediaType = MediaType.APPLICATION_JSON,
+                                        schema = Schema(implementation = Exception::class)
+                                )
+                        )
+                ),
+                APIResponse(
+                        responseCode = "404",
+                        description = "No Word found"
+                )
+            ]
+    )
+    fun getWordsByQuery(
             @QueryParam("id") id: String?,
             @QueryParam("text") text: String?,
             @QueryParam("page") page: Int?,
             @QueryParam("pageSize") pageSize: Int?
-    ): Array<IWordDTO>
+    ): Array<WordDTO>
 
     @GET
     @Path("/id/{id}")
     @Produces("application/json")
-    fun getWordById(@PathParam("id") id: String?): IWordDTO
+    fun getWordById(@PathParam("id") @Schema(maxLength = 24) id: String?): WordDTO
 
     @POST
     @Consumes("application/json")
@@ -48,7 +76,7 @@ interface IWordResource {
                         content = arrayOf(
                                 Content(
                                         mediaType = MediaType.APPLICATION_JSON,
-                                        schema = Schema(implementation = IWordDTO::class)
+                                        schema = Schema(implementation = WordDTO::class)
                                 )
                         )
                 ),
@@ -58,8 +86,14 @@ interface IWordResource {
                 )
             ]
     )
-    fun addWord(wordDTO: IWordDTO): IWordDTO
+    fun addWord(wordDTO: WordDTO): WordDTO
 
     @DELETE
-    fun deleteWord(wordDTO: IWordDTO)
+    @Consumes("application/json")
+    fun deleteWord(wordDTO: WordDTO)
+
+    @PUT
+    @Consumes("application/json")
+    @Produces("application/json")
+    fun putWord(wordDTO: WordDTO)
 }
