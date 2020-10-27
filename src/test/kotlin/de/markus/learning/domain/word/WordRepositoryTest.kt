@@ -59,14 +59,11 @@ class WordRepositoryTest {
         word.persist()
 
         val lesson = Lesson()
-        lesson.words = listOf(word)
-
+        lesson.words = mutableListOf(word)
         lesson.persist()
-
-
         val all = wordRepository.findAll().list<Word>()
 
-        println(all)
-
+        assert(all.isNotEmpty())
+        reset()
     }
 }

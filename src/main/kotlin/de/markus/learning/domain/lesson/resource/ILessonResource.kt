@@ -16,26 +16,27 @@ interface ILessonResource {
     @GET
     @Path("/id/{id}")
     @Produces("application/json")
-    fun getLessonById(@PathParam("id") id: String?): LessonDTO
+    fun getLessonById(@PathParam("id") id: String?): ILessonDTO
 
     @GET
     @Produces("application/json")
     fun getLessonByQuery(@QueryParam("name") name: String?,
                          @QueryParam("page") page: Int?,
-                         @QueryParam("pageSize") pageSize: Int?): Array<LessonDTO>
+                         @QueryParam("pageSize") pageSize: Int?): Array<ILessonDTO>
 
     @POST
     @Consumes("application/json")
     @Produces("application/json")
-    fun addLesson(lessonDTO: LessonDTO): LessonDTO
+    fun addLesson(lessonDTO: ILessonDTO): ILessonDTO
 
     @DELETE
     @Produces("application/json")
-    fun deleteLesson(lessonDTO: LessonDTO?): Response?
+    fun deleteLesson(lessonDTO: ILessonDTO?): Response?
 
     @PUT
     @Consumes("application/json")
     @Produces("application/json")
-    fun putLesson(lessonDTO: LessonDTO?): LessonDTO
+    fun putLesson(lessonDTO: ILessonDTO?): ILessonDTO
+
 
 }

@@ -11,11 +11,12 @@ import javax.annotation.Priority
 import javax.enterprise.context.ApplicationScoped
 import javax.inject.Inject
 
+interface IWordService: IService<IWordDTO>
 
-fun WordService.findByQuery(id: String,
-                            text: String,
-                            index: Int,
-                            size: Int): Array<WordDTO> {
+fun WordService.findByQuery(id: String = "",
+                            text: String = "",
+                            index: Int = 0,
+                            size: Int = 10): Array<IWordDTO> {
     val page = Page.of(index, size)
 
     return if (id == "" && text == "")
@@ -24,7 +25,6 @@ fun WordService.findByQuery(id: String,
                 .page<Word>(page)
                 .list<Word>()
                 .map(mapper::convertModelToDTO)
-                .map { each -> each as WordDTO }
                 .toTypedArray()
     else
         repository
@@ -32,13 +32,12 @@ fun WordService.findByQuery(id: String,
                 .page<Word>(page)
                 .list<Word>()
                 .map(mapper::convertModelToDTO)
-                .map { each -> each as WordDTO }
                 .toTypedArray()
 
 }
 
 @ApplicationScoped
-class WordService : AbstractService<Word, IWordDTO>() {
+class WordService : AbstractService<Word, IWordDTO>(), IWordService {
 
     @Inject
     override lateinit var mapper: IWordMapper

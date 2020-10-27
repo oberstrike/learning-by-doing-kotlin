@@ -1,5 +1,6 @@
 package de.markus.learning.domain.word.resource
 
+import de.markus.learning.domain.word.IWordDTO
 import de.markus.learning.domain.word.WordDTO
 import org.eclipse.microprofile.openapi.annotations.media.Content
 import org.eclipse.microprofile.openapi.annotations.media.Schema
@@ -7,7 +8,6 @@ import org.eclipse.microprofile.openapi.annotations.responses.APIResponse
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponses
 import org.eclipse.microprofile.openapi.annotations.tags.Tag
 import org.eclipse.microprofile.openapi.annotations.tags.Tags
-import javax.validation.Valid
 import javax.ws.rs.*
 import javax.ws.rs.core.MediaType
 
@@ -33,7 +33,7 @@ interface IWordResource {
                         content = arrayOf(
                                 Content(
                                         mediaType = MediaType.APPLICATION_JSON,
-                                        schema = Schema(implementation = WordDTO::class)
+                                        schema = Schema(implementation = IWordDTO::class)
                                 )
                         )
                 ),
@@ -58,12 +58,12 @@ interface IWordResource {
             @QueryParam("text") text: String?,
             @QueryParam("page") page: Int?,
             @QueryParam("pageSize") pageSize: Int?
-    ): Array<WordDTO>
+    ): Array<IWordDTO>
 
     @GET
     @Path("/id/{id}")
     @Produces("application/json")
-    fun getWordById(@PathParam("id") @Schema(maxLength = 24) id: String?): WordDTO
+    fun getWordById(@PathParam("id") @Schema(maxLength = 24) id: String?): IWordDTO
 
     @POST
     @Consumes("application/json")
@@ -76,7 +76,7 @@ interface IWordResource {
                         content = arrayOf(
                                 Content(
                                         mediaType = MediaType.APPLICATION_JSON,
-                                        schema = Schema(implementation = WordDTO::class)
+                                        schema = Schema(implementation = IWordDTO::class)
                                 )
                         )
                 ),
@@ -86,14 +86,14 @@ interface IWordResource {
                 )
             ]
     )
-    fun addWord(wordDTO: WordDTO): WordDTO
+    fun addWord(wordDTO: IWordDTO): IWordDTO
 
     @DELETE
     @Consumes("application/json")
-    fun deleteWord(wordDTO: WordDTO)
+    fun deleteWord(wordDTO: IWordDTO)
 
     @PUT
     @Consumes("application/json")
     @Produces("application/json")
-    fun putWord(wordDTO: WordDTO)
+    fun putWord(wordDTO: IWordDTO)
 }

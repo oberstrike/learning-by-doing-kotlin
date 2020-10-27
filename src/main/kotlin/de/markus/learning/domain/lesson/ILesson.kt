@@ -7,12 +7,12 @@ import org.bson.codecs.pojo.annotations.BsonProperty
 
 interface ILesson {
     var name: String
-    var words: List<Word>
+    var words: MutableList<Word>
 }
 
 @MongoEntity(collection = "lesson")
 data class Lesson(
         override var name: String = "",
         @BsonProperty
-        override var words: List<Word> = emptyList()
+        override var words: MutableList<Word> = mutableListOf()
 ) : ILesson, PanacheMongoEntity()

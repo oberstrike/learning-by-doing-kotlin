@@ -1,9 +1,13 @@
-plugins {
-    kotlin("jvm") version "1.3.72"
-    kotlin("plugin.allopen") version "1.3.72"
-    kotlin("kapt") version "1.3.72"
-    id("io.quarkus")
+val quarkusPlatformGroupId: String by project
+val quarkusPlatformArtifactId: String by project
+val quarkusPlatformVersion: String by project
+val kotlinVersion: String by project
 
+plugins {
+    kotlin("jvm") version "1.4.10"
+    kotlin("plugin.allopen") version "1.4.10"
+    kotlin("kapt") version "1.4.10"
+    id("io.quarkus")
 }
 
 repositories {
@@ -11,11 +15,10 @@ repositories {
     mavenCentral()
 }
 
-val quarkusPlatformGroupId: String by project
-val quarkusPlatformArtifactId: String by project
-val quarkusPlatformVersion: String by project
+
 
 dependencies {
+
 
     implementation(enforcedPlatform("${quarkusPlatformGroupId}:${quarkusPlatformArtifactId}:${quarkusPlatformVersion}"))
     implementation("io.quarkus:quarkus-keycloak-authorization")
@@ -29,18 +32,20 @@ dependencies {
     implementation("io.quarkus:quarkus-resteasy")
     implementation("io.quarkus:quarkus-jackson")
     implementation("io.quarkus:quarkus-hibernate-validator")
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
+    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.4.10")
     implementation("io.quarkus:quarkus-arc")
     implementation("io.quarkus:quarkus-smallrye-openapi")
-    implementation("org.jetbrains.kotlin:kotlin-reflect:1.1.0")
-    implementation("io.arrow-kt:arrow-core:0.11.0")
+    implementation("org.jetbrains.kotlin:kotlin-reflect:1.4.10")
 
+    implementation("io.arrow-kt:arrow-core:0.11.0")
+    testImplementation("io.github.serpro69:kotlin-faker:1.4.1")
     testImplementation("io.quarkus:quarkus-junit5")
     testImplementation("io.quarkus:quarkus-junit5-mockito")
     testImplementation("io.rest-assured:rest-assured")
     testImplementation("io.quarkus:quarkus-panache-mock")
 //  testImplementation("org.mockito:mockito-core:3.5.13")
     testImplementation("com.nhaarman.mockitokotlin2:mockito-kotlin:2.2.0")
+    testImplementation("de.flapdoodle.embed:de.flapdoodle.embed.mongo:2.2.1-SNAPSHOT")
 
 }
 

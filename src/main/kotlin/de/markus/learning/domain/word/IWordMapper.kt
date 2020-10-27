@@ -24,7 +24,8 @@ class WordMapper : IWordMapper {
                 type = dto.type,
                 translations = dto.translations.toList()
         ).apply {
-            if (dto.id != null && ObjectId.isValid(dto.id)) id = ObjectId(dto.id)
+            if (dto.id != null && ObjectId.isValid(dto.id))
+                id = ObjectId(dto.id)
         }
     }
 

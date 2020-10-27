@@ -18,7 +18,7 @@ class LessonMapper(
                 name = dto.name
         ).apply {
             if (dto.id != null) id = ObjectId(dto.id)
-            if (words.isNotEmpty()) words = wordMapper.convertDTOsToModels(dto.words.toList())
+            if (dto.words.isNotEmpty()) words = wordMapper.convertDTOsToModels(dto.words.toList()).toMutableList()
         }
     }
 
@@ -26,7 +26,7 @@ class LessonMapper(
         return LessonDTO(
                 id = model.id.toString(),
                 name = model.name,
-                words = if (model.words.isNotEmpty()) wordMapper.convertModelsToDTOs(model.words).map { it as WordDTO }.toTypedArray() else emptyArray()
+                words = if (model.words.isNotEmpty()) wordMapper.convertModelsToDTOs(model.words).map { it as WordDTO } else emptyList()
         )
     }
 

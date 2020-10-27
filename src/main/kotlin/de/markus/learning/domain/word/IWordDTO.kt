@@ -2,11 +2,8 @@ package de.markus.learning.domain.word
 
 import de.markus.learning.domain.util.Indexable
 import org.eclipse.microprofile.openapi.annotations.media.Schema
-import javax.validation.constraints.NotEmpty
-import javax.validation.constraints.Size
-import kotlin.math.min
 
-@Schema(name = "Word")
+@Schema(name = "word")
 interface IWordDTO : Indexable {
     @get:Schema(required = false, maxLength = 24, pattern = "^[a-zA-Z0-9]*\$")
     override val id: String?
@@ -17,17 +14,18 @@ interface IWordDTO : Indexable {
     @get:Schema(required = true, maxLength = 12)
     val type: WordType
 
-    @get:Schema(required = true, maxLength = 24, maxItems = 50, minItems = 1)
+    @get:Schema(required = true, maxLength = 24, maxItems = 50, minItems = 1 )
     val translations: Array<String>
 }
 
+
 data class WordDTO(
-        override val id: String? = "",
-        @Size(message = "", min = 1, max = 24)
-        override val text: String = "",
-        override val type: WordType = WordType.NOUN,
-        override val translations: Array<String> = emptyArray()
-) : IWordDTO {
+        override var id: String? = null,
+        override var text: String = "",
+        override var type: WordType = WordType.NOUN,
+        override var translations: Array<String> = emptyArray()
+) : IWordDTO
+{
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false
@@ -43,7 +41,7 @@ data class WordDTO(
     }
 
     override fun hashCode(): Int {
-        var result = id.hashCode()
+        var result = id?.hashCode() ?: 0
         result = 31 * result + text.hashCode()
         result = 31 * result + type.hashCode()
         result = 31 * result + translations.contentHashCode()

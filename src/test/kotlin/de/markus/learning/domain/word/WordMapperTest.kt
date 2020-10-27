@@ -1,16 +1,34 @@
 package de.markus.learning.domain.word
 
+import de.markus.learning.domain.util.getRandomWord
 import org.bson.types.ObjectId
+import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 
 class WordMapperTest {
 
     @Test
+    fun convertDTOToModelAndModelToDTOTest() {
+        val mapper = WordMapper()
+
+        val wordDTO = getRandomWord(true)
+
+        val wordModel = mapper.convertDTOToModel(wordDTO)
+        assertWordEqualWordDTO(wordModel, wordDTO)
+        val newWordDTO = mapper.convertModelToDTO(wordModel)
+        Assertions.assertEquals(wordDTO, newWordDTO)
+    }
+
+
+    @Test
     fun convertToDTOTest() {
+        val text = "libertad"
+        val wordType = WordType.NOUN
+        val translations = listOf("Freiheit")
         val word = Word(
-                text = "libertad",
-                type = WordType.NOUN,
-                translations = listOf("Freiheit")
+                text = text,
+                type = wordType,
+                translations = translations
         ).apply {
             id = ObjectId.get()
         }
