@@ -16,7 +16,6 @@ repositories {
 }
 
 
-
 dependencies {
 
 
@@ -31,13 +30,11 @@ dependencies {
     implementation("io.quarkus:quarkus-kotlin")
     implementation("io.quarkus:quarkus-resteasy")
     implementation("io.quarkus:quarkus-jackson")
-    implementation("io.quarkus:quarkus-hibernate-validator")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.4.10")
     implementation("io.quarkus:quarkus-arc")
     implementation("io.quarkus:quarkus-smallrye-openapi")
     implementation("org.jetbrains.kotlin:kotlin-reflect:1.4.10")
 
-    implementation("io.arrow-kt:arrow-core:0.11.0")
     testImplementation("io.github.serpro69:kotlin-faker:1.4.1")
     testImplementation("io.quarkus:quarkus-junit5")
     testImplementation("io.quarkus:quarkus-junit5-mockito")
@@ -46,7 +43,7 @@ dependencies {
 //  testImplementation("org.mockito:mockito-core:3.5.13")
     testImplementation("com.nhaarman.mockitokotlin2:mockito-kotlin:2.2.0")
     testImplementation("de.flapdoodle.embed:de.flapdoodle.embed.mongo:2.2.1-SNAPSHOT")
-
+    testImplementation("io.quarkus:quarkus-test-security")
 }
 
 group = "de.markus.learning"

@@ -37,8 +37,8 @@ class WordResource(private val wordService: WordService) : IWordResource {
         if (!result) throw BadRequestException("There was an error!!")
     }
 
-    override fun putWord(wordDTO: IWordDTO) {
-        wordService.put(wordDTO)
+    override fun putWord(wordDTO: IWordDTO): IWordDTO {
+        return wordService.put(wordDTO)?: throw BadRequestException("There was a error while updating the word")
     }
 
 }

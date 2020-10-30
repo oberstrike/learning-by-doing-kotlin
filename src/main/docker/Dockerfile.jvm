@@ -27,7 +27,6 @@ ARG JAVA_PACKAGE=java-11-openjdk-headless
 ARG RUN_JAVA_VERSION=1.3.8
 
 ENV LANG='en_US.UTF-8' LANGUAGE='en_US:en'
-
 # Install java and the run-java script
 # Also set up permissions for user `1001`
 RUN microdnf install curl ca-certificates ${JAVA_PACKAGE} \
@@ -44,6 +43,8 @@ RUN microdnf install curl ca-certificates ${JAVA_PACKAGE} \
 
 # Configure the JAVA_OPTIONS, you can add -XshowSettings:vm to also display the heap size.
 ENV JAVA_OPTIONS="-Dquarkus.http.host=0.0.0.0 -Djava.util.logging.manager=org.jboss.logmanager.LogManager"
+ENV MONGODB_HOST='mongodb' MONGODB_PORT='27018' AUTH_SERVER_HOST='keycloak' AUTH_SERVER_PORT='8180'
+
 
 COPY build/lib/* /deployments/lib/
 COPY build/*-runner.jar /deployments/app.jar

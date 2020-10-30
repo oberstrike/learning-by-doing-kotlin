@@ -34,7 +34,7 @@ class LessonServiceTest {
     fun saveTest() {
         //Init class to test
         val lessonService = LessonService(mapper, lessonRepository, lessonValidator)
-        val lessonDTO = LessonDTO(null, "libertad", emptyList())
+        val lessonDTO = LessonDTO(null, "libertad", emptyArray())
         val result = lessonService.save(lessonDTO)
 
         var arrayOfLessonDTOs = lessonService.findByQuery(name = "libertad")
@@ -58,7 +58,7 @@ class LessonServiceTest {
         val savedWordDTO = wordService.save(wordDTO)
         val word = wordService.mapper.convertDTOToModel(savedWordDTO)
 
-        val lessonDTO = LessonDTO(name = "Sprache", words = emptyList(), id = null)
+        val lessonDTO = LessonDTO(name = "Sprache", words = emptyArray(), id = null)
         val savedLesson = lessonService.save(lessonDTO)
         //--
 
@@ -82,7 +82,7 @@ class LessonServiceTest {
         val savedWordDTO = wordService.save(wordDTO)
         val word = wordService.mapper.convertDTOToModel(savedWordDTO)
 
-        val lessonDTO = LessonDTO(name = "Sprache", words = emptyList(), id = null)
+        val lessonDTO = LessonDTO(name = "Sprache", words = emptyArray(), id = null)
         val savedLesson = lessonService.save(lessonDTO)
         //--
 

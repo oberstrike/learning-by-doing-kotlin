@@ -9,6 +9,7 @@ import org.bson.types.ObjectId
 import javax.enterprise.context.ApplicationScoped
 import javax.ws.rs.BadRequestException
 import javax.ws.rs.NotFoundException
+
 interface IService<T> {
     fun save(dto: T): T
     fun delete(dto: T): Boolean
@@ -40,7 +41,7 @@ abstract class AbstractService<T : PanacheMongoEntity, U : Indexable> : IService
     }
 
     override fun save(dto: U): U {
-        if(dto.id != null || dto.id == "") dto.id = null
+        if (dto.id != null || dto.id == "") dto.id = null
 
         val word = mapper.convertDTOToModel(dto)
 
@@ -53,6 +54,7 @@ abstract class AbstractService<T : PanacheMongoEntity, U : Indexable> : IService
         }
     }
 
+    @Throws(NotFoundException::class)
     override fun delete(dto: U): Boolean = whenValid(dto) {
         val model = mapper.convertDTOToModel(dto)
         val original = repository.findByIdOptional(model.id)

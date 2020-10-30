@@ -59,7 +59,7 @@ class LessonResource(
 
             }
         }
-        lessonDTO.words = newWords
+        lessonDTO.words = newWords.toTypedArray()
 
         val result = lessonService.put(lessonDTO)
 

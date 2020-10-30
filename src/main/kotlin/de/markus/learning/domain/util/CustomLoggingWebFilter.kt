@@ -1,7 +1,6 @@
 package de.markus.learning.domain.util
 
 import org.jboss.logging.Logger
-import java.util.logging.LogRecord
 import javax.enterprise.context.ApplicationScoped
 import javax.servlet.Filter
 import javax.servlet.FilterChain
@@ -12,7 +11,7 @@ import javax.servlet.http.HttpServletRequest
 
 @WebFilter("/*")
 @ApplicationScoped
-class WebFilter : Filter {
+class CustomLoggingWebFilter : Filter {
 
 
     companion object {
@@ -29,3 +28,4 @@ class WebFilter : Filter {
     }
 
 }
+

@@ -3,18 +3,18 @@ package de.markus.learning.domain.word
 import de.markus.learning.domain.util.Indexable
 import org.eclipse.microprofile.openapi.annotations.media.Schema
 
-@Schema(name = "word")
+@Schema(name = "Word", maxProperties = 4)
 interface IWordDTO : Indexable {
     @get:Schema(required = false, maxLength = 24, pattern = "^[a-zA-Z0-9]*\$")
-    override val id: String?
+    override var id: String?
 
-    @get:Schema(required = true, maxLength = 24, pattern = "^[a-zA-Z0-9]*\$")
+    @get:Schema(required = true, maxLength = 24, pattern = "^[a-zA-Z0-9 ]*\$")
     val text: String
 
     @get:Schema(required = true, maxLength = 12)
     val type: WordType
 
-    @get:Schema(required = true, maxLength = 24, maxItems = 50, minItems = 1 )
+    @get:Schema(required = true, maxLength = 24, maxItems = 50, minItems = 1)
     val translations: Array<String>
 }
 
@@ -24,8 +24,7 @@ data class WordDTO(
         override var text: String = "",
         override var type: WordType = WordType.NOUN,
         override var translations: Array<String> = emptyArray()
-) : IWordDTO
-{
+) : IWordDTO {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false
