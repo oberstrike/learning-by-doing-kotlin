@@ -2,32 +2,43 @@ package de.markus.learning.domain.word
 
 import de.markus.learning.domain.util.IMapper
 import org.bson.types.ObjectId
+import org.mapstruct.AfterMapping
+import org.mapstruct.Mapper
+import org.mapstruct.Mapping
+import org.mapstruct.MappingTarget
+import org.mapstruct.factory.Mappers
 import javax.enterprise.context.ApplicationScoped
 
-interface IWordMapper : IMapper<Word, IWordDTO>
+@Mapper(uses = [AfterWordMapper::class], componentModel = "cdi")
+interface WordMapper : IMapper<Word, WordDTO> {
 
-@ApplicationScoped
-class WordMapper : IWordMapper {
-
-    override fun convertModelToDTO(model: Word): IWordDTO {
-        return WordDTO(
-                id = model.id?.toString(),
-                text = model.text,
-                type = model.type,
-                translations = model.translations.toTypedArray()
-        )
+    companion object {
+        val INSTANCE: WordMapper = Mappers.getMapper(WordMapper::class.java)
     }
 
-    override fun convertDTOToModel(dto: IWordDTO): Word {
-        return Word(
-                text = dto.text,
-                type = dto.type,
-                translations = dto.translations.toList()
-        ).apply {
-            if (dto.id != null && ObjectId.isValid(dto.id))
-                id = ObjectId(dto.id)
+    @Mapping(target = "id", ignore = true)
+    override fun convertModelToDTO(model: Word): WordDTO
+
+    @Mapping(target = "id", ignore = true)
+    override fun convertDTOToModel(dto: WordDTO): Word
+
+}
+
+@ApplicationScoped
+class AfterWordMapper {
+
+    @AfterMapping
+    fun toModel(@MappingTarget model: Word, dto: WordDTO) {
+        if (dto.id != null) {
+            model.id = ObjectId(dto.id)
+        }
+    }
+
+    @AfterMapping
+    fun toDTO(model: Word, @MappingTarget dto: WordDTO){
+        if(model.id != null){
+            dto.id = model.id.toHexString()
         }
     }
 
 }
-

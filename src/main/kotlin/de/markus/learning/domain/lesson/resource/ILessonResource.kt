@@ -1,6 +1,5 @@
 package de.markus.learning.domain.lesson.resource
 
-import de.markus.learning.domain.lesson.ILessonDTO
 import de.markus.learning.domain.lesson.LessonDTO
 import org.eclipse.microprofile.openapi.annotations.tags.Tag
 import org.eclipse.microprofile.openapi.annotations.tags.Tags
@@ -16,27 +15,27 @@ interface ILessonResource {
     @GET
     @Path("/id/{id}")
     @Produces("application/json")
-    fun getLessonById(@PathParam("id") id: String?): ILessonDTO
+    fun getLessonById(@PathParam("id") id: String?): LessonDTO
 
     @GET
     @Produces("application/json")
     fun getLessonByQuery(@QueryParam("name") name: String?,
                          @QueryParam("page") page: Int?,
-                         @QueryParam("pageSize") pageSize: Int?): Array<ILessonDTO>
+                         @QueryParam("pageSize") pageSize: Int?): Array<LessonDTO>
 
     @POST
     @Consumes("application/json")
     @Produces("application/json")
-    fun addLesson(lessonDTO: ILessonDTO): ILessonDTO
+    fun addLesson(lessonDTO: LessonDTO): LessonDTO
 
     @DELETE
     @Produces("application/json")
-    fun deleteLesson(lessonDTO: ILessonDTO?): Response?
+    fun deleteLesson(lessonDTO: LessonDTO?): Response?
 
     @PUT
     @Consumes("application/json")
     @Produces("application/json")
-    fun putLesson(lessonDTO: ILessonDTO?): ILessonDTO
+    fun putLesson(lessonDTO: LessonDTO?): LessonDTO
 
 
 }

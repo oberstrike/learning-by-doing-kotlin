@@ -1,7 +1,8 @@
 package de.markus.learning.domain.util
 
 
-import de.markus.learning.domain.word.IWordDTO
+
+import de.markus.learning.domain.word.WordDTO
 import io.quarkus.mongodb.panache.PanacheMongoEntity
 import io.quarkus.mongodb.panache.PanacheMongoRepository
 import io.quarkus.panache.common.Page
@@ -23,8 +24,8 @@ interface Validator<T> {
 }
 
 @ApplicationScoped
-class WordValidator : Validator<IWordDTO> {
-    override fun isValid(obj: IWordDTO): Boolean {
+class WordValidator : Validator<WordDTO> {
+    override fun isValid(obj: WordDTO): Boolean {
         return true
     }
 }

@@ -2,6 +2,7 @@ package de.markus.learning.domain.lesson
 
 import de.markus.learning.domain.util.MongoTestResource
 import de.markus.learning.domain.util.getRandomWord
+import de.markus.learning.domain.word.WordDTO
 import de.markus.learning.domain.word.WordRepository
 import de.markus.learning.domain.word.WordService
 import io.quarkus.test.common.QuarkusTestResource
@@ -34,7 +35,7 @@ class LessonServiceTest {
     fun saveTest() {
         //Init class to test
         val lessonService = LessonService(mapper, lessonRepository, lessonValidator)
-        val lessonDTO = LessonDTO(null, "libertad", emptyArray())
+        val lessonDTO = LessonDTO(null, "libertad", emptyList())
         val result = lessonService.save(lessonDTO)
 
         var arrayOfLessonDTOs = lessonService.findByQuery(name = "libertad")
@@ -54,11 +55,11 @@ class LessonServiceTest {
         val lessonService = LessonService(mapper, lessonRepository, lessonValidator)
 
         //Init needed objects for the test
-        val wordDTO = getRandomWord()
+        val wordDTO = getRandomWord() as WordDTO
         val savedWordDTO = wordService.save(wordDTO)
         val word = wordService.mapper.convertDTOToModel(savedWordDTO)
 
-        val lessonDTO = LessonDTO(name = "Sprache", words = emptyArray(), id = null)
+        val lessonDTO = LessonDTO(name = "Sprache", words = emptyList(), id = null)
         val savedLesson = lessonService.save(lessonDTO)
         //--
 
@@ -78,11 +79,11 @@ class LessonServiceTest {
 
         //Init class to test
         val lessonService = LessonService(mapper, lessonRepository, lessonValidator)
-        val wordDTO = getRandomWord()
+        val wordDTO = getRandomWord() as WordDTO
         val savedWordDTO = wordService.save(wordDTO)
         val word = wordService.mapper.convertDTOToModel(savedWordDTO)
 
-        val lessonDTO = LessonDTO(name = "Sprache", words = emptyArray(), id = null)
+        val lessonDTO = LessonDTO(name = "Sprache", words = emptyList(), id = null)
         val savedLesson = lessonService.save(lessonDTO)
         //--
 

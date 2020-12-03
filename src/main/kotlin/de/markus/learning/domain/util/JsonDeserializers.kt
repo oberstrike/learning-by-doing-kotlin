@@ -43,7 +43,7 @@ open class AbstractJsonDeserializer {
                 id = id,
                 text = textJson,
                 type = WordType.valueOf(typeJson),
-                translations = translations.toTypedArray()
+                translations = translations
 
         )
     }

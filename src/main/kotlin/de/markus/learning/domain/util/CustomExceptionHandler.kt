@@ -1,5 +1,6 @@
 package de.markus.learning.domain.util
 
+import com.maju.openapi.codegen.generators.schemas.ResponseError
 import io.quarkus.resteasy.runtime.NotFoundExceptionMapper
 import io.quarkus.security.UnauthorizedException
 import org.eclipse.microprofile.openapi.annotations.media.Schema
@@ -41,11 +42,4 @@ class CustomExceptionHandler : ExceptionMapper<RuntimeException> {
     }
 }
 
-@Schema(name = "Error", requiredProperties = ["code", "message"], example = "{\n" + "  \"code\": 400,\n" + "  \"message\": \"Here is an error message\"\n" + "}")
-data class ResponseError(
-        @get:Schema(name = "code", minimum = "400", maximum = "500")
-        val code: Int = 0,
-        @get:Schema(minLength = 0, maxLength = 140, pattern = "^[a-zA-Z0-9 ]*\$")
-        val message: String = ""
-)
 

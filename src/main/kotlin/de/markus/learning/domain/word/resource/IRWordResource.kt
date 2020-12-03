@@ -1,9 +1,7 @@
 package de.markus.learning.domain.word.resource
 
-import de.markus.learning.domain.util.ResponseError
-import de.markus.learning.domain.word.IWordDTO
+import com.maju.openapi.codegen.generators.schemas.ResponseError
 import de.markus.learning.domain.word.WordDTO
-import org.eclipse.microprofile.openapi.annotations.Operation
 import org.eclipse.microprofile.openapi.annotations.enums.SchemaType
 import org.eclipse.microprofile.openapi.annotations.media.Content
 import org.eclipse.microprofile.openapi.annotations.media.Schema
@@ -21,16 +19,16 @@ import javax.ws.rs.core.MediaType
  * @since 21.10.2020
  */
 
+const val responseCode: String = "200"
 
-@Path("/api/word")
+
+@Path(value = "/api/word")
 @Tags(
         Tag(name = "Word", description = "The path to manage the word resource")
 )
-interface IWordResource {
-
+interface IRWordResource {
     @GET
-    @Produces("application/json")
-    @Parameters
+    @Produces(MediaType.APPLICATION_JSON)
     @APIResponses(
             value = [
                 APIResponse(
@@ -45,12 +43,12 @@ interface IWordResource {
                 ),
 
                 APIResponse(
-                        responseCode = "200",
+                        responseCode = responseCode,
                         description = "Returns a list of words",
                         content = arrayOf(
                                 Content(
                                         mediaType = MediaType.APPLICATION_JSON,
-                                        schema = Schema(type = SchemaType.ARRAY, implementation = IWordDTO::class)
+                                        schema = Schema(type = SchemaType.ARRAY, implementation = WordDTO::class)
                                 )
                         )
                 ),
@@ -119,7 +117,7 @@ interface IWordResource {
                     minimum = "1",
                     maximum = "1000"
             )) pageSize: Int?
-    ): Array<IWordDTO>
+    ): Array<WordDTO>
 
     @GET
     @Path("/id/{id}")
@@ -143,7 +141,7 @@ interface IWordResource {
                         content = arrayOf(
                                 Content(
                                         mediaType = MediaType.APPLICATION_JSON,
-                                        schema = Schema(implementation = IWordDTO::class)
+                                        schema = Schema(implementation = WordDTO::class)
                                 )
                         )
                 ),
@@ -194,7 +192,7 @@ interface IWordResource {
             maxLength = 24,
             minLength = 24,
             pattern = "^[a-zA-Z0-9]*\$"
-    )) id: String?): IWordDTO
+    )) id: String?): WordDTO
 
     @POST
     @Consumes("application/json")
@@ -218,7 +216,7 @@ interface IWordResource {
                         content = arrayOf(
                                 Content(
                                         mediaType = MediaType.APPLICATION_JSON,
-                                        schema = Schema(implementation = IWordDTO::class)
+                                        schema = Schema(implementation = WordDTO::class)
                                 )
                         )
                 ),
@@ -274,7 +272,7 @@ interface IWordResource {
                 )
             ]
     )
-    fun addWord(wordDTO: IWordDTO): IWordDTO
+    fun addWord(wordDTO: WordDTO): WordDTO
 
     @DELETE
     @Consumes("application/json")
@@ -356,7 +354,7 @@ interface IWordResource {
                 )
             ]
     )
-    fun deleteWord(wordDTO: IWordDTO)
+    fun deleteWord(wordDTO: WordDTO)
 
     @PUT
     @Consumes("application/json")
@@ -440,5 +438,7 @@ interface IWordResource {
                 )
             ]
     )
-    fun putWord(wordDTO: IWordDTO): IWordDTO
+    fun putWord(wordDTO: WordDTO): WordDTO
+
+
 }

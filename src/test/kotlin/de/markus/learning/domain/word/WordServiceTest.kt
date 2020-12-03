@@ -15,13 +15,13 @@ class WordServiceTest {
     @Inject
     lateinit var wordService: WordService
 
-    lateinit var wordDTO: IWordDTO
+    lateinit var wordDTO: WordDTO
 
     private val dto = getRandomWord()
 
     @BeforeAll
     fun prepare() {
-        wordDTO = wordService.save(dto)
+       // wordDTO = wordService.save(dto)
     }
 
     @AfterAll

@@ -1,33 +1,42 @@
 package de.markus.learning.domain.lesson
 
 import de.markus.learning.domain.util.IMapper
-import de.markus.learning.domain.util.convertDTOsToModels
-import de.markus.learning.domain.util.convertModelsToDTOs
-import de.markus.learning.domain.word.WordDTO
 import de.markus.learning.domain.word.WordMapper
 import org.bson.types.ObjectId
+import org.mapstruct.AfterMapping
+import org.mapstruct.Mapper
+import org.mapstruct.Mapping
+import org.mapstruct.MappingTarget
 import javax.enterprise.context.ApplicationScoped
+import javax.ws.rs.ApplicationPath
+
+@Mapper(uses = [AfterLessonMapper::class, WordMapper::class], componentModel = "cdi")
+interface LessonMapper: IMapper<Lesson, LessonDTO>{
+
+    @Mapping(target = "id", ignore = true)
+    override fun convertDTOToModel(dto: LessonDTO): Lesson
+
+    @Mapping(target = "id", ignore = true)
+    override fun convertModelToDTO(model: Lesson): LessonDTO
+
+}
+
 
 @ApplicationScoped
-class LessonMapper(
-        private val wordMapper: WordMapper
-) : IMapper<Lesson, ILessonDTO> {
+class AfterLessonMapper{
 
-    override fun convertDTOToModel(dto: ILessonDTO): Lesson {
-        return Lesson(
-                name = dto.name
-        ).apply {
-            if (dto.id != null) id = ObjectId(dto.id)
-            if (dto.words.isNotEmpty()) words = wordMapper.convertDTOsToModels(dto.words.toList()).toMutableList()
+    @AfterMapping
+    fun toModel(@MappingTarget model: Lesson, dto: LessonDTO) {
+        if (dto.id != null) {
+            model.id = ObjectId(dto.id)
         }
     }
 
-    override fun convertModelToDTO(model: Lesson): ILessonDTO {
-        return LessonDTO(
-                id = model.id.toString(),
-                name = model.name,
-                words = if (model.words.isNotEmpty()) wordMapper.convertModelsToDTOs(model.words).map { it as WordDTO }.toTypedArray() else emptyArray()
-        )
+    @AfterMapping
+    fun toDTO(model: Lesson, @MappingTarget dto: LessonDTO){
+        if(model.id != null){
+            dto.id = model.id.toHexString()
+        }
     }
 
 }

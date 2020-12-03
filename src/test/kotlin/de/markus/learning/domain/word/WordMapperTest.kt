@@ -9,9 +9,9 @@ class WordMapperTest {
 
     @Test
     fun convertDTOToModelAndModelToDTOTest() {
-        val mapper = WordMapper()
+        val mapper = WordMapper.INSTANCE
 
-        val wordDTO = getRandomWord(true)
+        val wordDTO = getRandomWord(true) as WordDTO
 
         val wordModel = mapper.convertDTOToModel(wordDTO)
         assertWordEqualWordDTO(wordModel, wordDTO)
@@ -33,7 +33,7 @@ class WordMapperTest {
             id = ObjectId.get()
         }
 
-        val mapper = WordMapper()
+        val mapper =WordMapper.INSTANCE
 
         val dto = mapper.convertModelToDTO(word)
 
@@ -41,7 +41,7 @@ class WordMapperTest {
     }
 
     @Test
-    private fun assertWordEqualWordDTO(word: Word, dto: IWordDTO) {
+    private fun assertWordEqualWordDTO(word: Word, dto: WordDTO) {
         assert(word.text == dto.text)
         assert(word.type == dto.type)
         assert(word.translations.size == dto.translations.size)
@@ -58,10 +58,10 @@ class WordMapperTest {
                 id = ObjectId.get().toString(),
                 text = "libertad",
                 type = WordType.NOUN,
-                translations = arrayOf("Freiheit")
+                translations = listOf("Freiheit")
         )
 
-        val mapper = WordMapper()
+        val mapper = WordMapper.INSTANCE
 
         val word = mapper.convertDTOToModel(dto)
 

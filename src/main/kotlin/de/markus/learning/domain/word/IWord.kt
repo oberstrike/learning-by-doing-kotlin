@@ -1,5 +1,7 @@
 package de.markus.learning.domain.word
 
+import com.maju.openapi.annotations.OASResource
+import com.maju.openapi.annotations.OASSchema
 import io.quarkus.mongodb.panache.MongoEntity
 import io.quarkus.mongodb.panache.PanacheMongoEntity
 

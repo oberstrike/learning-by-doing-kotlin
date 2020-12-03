@@ -1,4 +1,4 @@
-import de.markus.learning.domain.util.ResponseError
+import com.maju.openapi.codegen.generators.schemas.ResponseError
 import io.quarkus.runtime.Quarkus
 import io.quarkus.runtime.QuarkusApplication
 import io.quarkus.runtime.annotations.QuarkusMain

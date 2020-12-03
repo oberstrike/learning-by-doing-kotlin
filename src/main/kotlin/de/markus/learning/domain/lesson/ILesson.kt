@@ -5,6 +5,7 @@ import io.quarkus.mongodb.panache.MongoEntity
 import io.quarkus.mongodb.panache.PanacheMongoEntity
 import org.bson.codecs.pojo.annotations.BsonProperty
 
+
 interface ILesson {
     var name: String
     var words: MutableList<Word>

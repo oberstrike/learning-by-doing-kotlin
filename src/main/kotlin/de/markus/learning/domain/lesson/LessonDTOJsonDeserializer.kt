@@ -1,15 +1,15 @@
 package de.markus.learning.domain.lesson
 
 import de.markus.learning.domain.util.AbstractJsonDeserializer
-import de.markus.learning.domain.word.IWordDTO
+import de.markus.learning.domain.word.WordDTO
 import java.lang.reflect.Type
 import javax.json.bind.serializer.DeserializationContext
 import javax.json.bind.serializer.JsonbDeserializer
 import javax.json.stream.JsonParser
 
 
-class LessonDTOJsonDeserializer : JsonbDeserializer<ILessonDTO>, AbstractJsonDeserializer() {
-    override fun deserialize(parser: JsonParser, ctx: DeserializationContext, p2: Type?): ILessonDTO {
+class LessonDTOJsonDeserializer : JsonbDeserializer<LessonDTO>, AbstractJsonDeserializer() {
+    override fun deserialize(parser: JsonParser, ctx: DeserializationContext, p2: Type?): LessonDTO {
         val jsonValue = parser.value
         val jsonObject = jsonValue.asJsonObject()
 
@@ -17,7 +17,7 @@ class LessonDTOJsonDeserializer : JsonbDeserializer<ILessonDTO>, AbstractJsonDes
         val name = jsonObject.getString("name", "")
 
         val jsonWords = jsonObject.getJsonArray("words")
-        val words = mutableListOf<IWordDTO>()
+        val words = mutableListOf<WordDTO>()
 
         if (jsonWords != null) {
             val size = jsonWords.size
@@ -28,9 +28,9 @@ class LessonDTOJsonDeserializer : JsonbDeserializer<ILessonDTO>, AbstractJsonDes
         }
 
         return LessonDTO(
-                id = id,
-                name = name,
-                words = words.toTypedArray()
+            id = id,
+            name = name,
+            words = words
         )
     }
 }
