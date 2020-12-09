@@ -30,7 +30,7 @@ class WordValidator : Validator<WordDTO> {
     }
 }
 
-abstract class AbstractService<T : PanacheMongoEntity, U : Indexable> : IService<U> {
+abstract class AbstractService<T : PanacheMongoEntity, U : Indexed> : IService<U> {
 
     abstract val mapper: IMapper<T, U>
     abstract val repository: PanacheMongoRepository<T>

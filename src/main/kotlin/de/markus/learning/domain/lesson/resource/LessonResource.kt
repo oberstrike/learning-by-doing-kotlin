@@ -1,5 +1,8 @@
 package de.markus.learning.domain.lesson.resource
 
+import com.maju.openapi.annotations.OASPath
+import com.maju.openapi.annotations.OASResource
+import com.maju.openapi.codegen.RequestMethod
 import de.markus.learning.domain.lesson.LessonDTO
 import de.markus.learning.domain.lesson.ILessonService
 import de.markus.learning.domain.word.IWordService
@@ -12,29 +15,33 @@ import javax.ws.rs.PathParam
 import javax.ws.rs.core.Response
 
 @ApplicationScoped
+@OASResource(path = "/api/lesson", tagName = "Lesson", tagDescription = "The path to manage the lesson resource")
 class LessonResource(
-        private val lessonService: ILessonService,
-        private val wordService: IWordService
-) : ILessonResource {
+    private val lessonService: ILessonService,
+    private val wordService: IWordService
+) : ILessonResource{
 
-    override fun getLessonById(@PathParam("id") id: String?): LessonDTO {
+    @OASPath(path = "/id/{id}")
+    override fun byId(@PathParam("id") id: String?): LessonDTO {
         if (id == null) throw BadRequestException()
         val result = lessonService.findById(id)
         return when (result != null) {
-            true -> result as LessonDTO
+            true -> result
             false -> throw NotFoundException("There was no lesson with the id: $id found")
         }
     }
 
+    @OASPath
     override fun getLessonByQuery(name: String?, page: Int?, pageSize: Int?): Array<LessonDTO> {
         return lessonService.findByQuery(name ?: "", page ?: 0, pageSize ?: 10)
     }
 
+    @OASPath(requestMethod = RequestMethod.POST)
     override fun addLesson(lessonDTO: LessonDTO): LessonDTO {
-        val result = lessonService.save(lessonDTO)
-        return result as LessonDTO
+        return lessonService.save(lessonDTO)
     }
 
+    @OASPath(requestMethod = RequestMethod.DELETE)
     override fun deleteLesson(lessonDTO: LessonDTO?): Response {
         if (lessonDTO == null) throw MissingParameterException()
         val successfullyDeleted = lessonService.delete(lessonDTO)
@@ -42,6 +49,7 @@ class LessonResource(
         return Response.ok().build()
     }
 
+    @OASPath(requestMethod = RequestMethod.PUT)
     override fun putLesson(lessonDTO: LessonDTO?): LessonDTO {
         if (lessonDTO == null) throw MissingParameterException()
 

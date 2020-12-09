@@ -1,5 +1,5 @@
 package de.markus.learning.domain.util
 
-interface Indexable {
+interface Indexed {
     var id: String?
 }

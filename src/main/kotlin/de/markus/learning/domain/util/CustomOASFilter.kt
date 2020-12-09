@@ -10,10 +10,8 @@ class CustomOnFilterSchemaHandler : AbstractOASFilter.IOnFilterSchemaHandler {
     override fun onFilterSchema(schema: Schema) {
         when (schema.type) {
             Schema.SchemaType.OBJECT -> schema.additionalPropertiesBoolean = false
-            Schema.SchemaType.STRING -> if (schema.pattern == null) {
-                schema.pattern = baseStringPattern
-                schema.minLength = baseMinLength.toIntOrNull() ?: 0
-                schema.maxLength = baseMaxLength.toIntOrNull() ?: 100
+            Schema.SchemaType.ARRAY -> if (schema.maxItems == null) {
+                schema.maxItems = 100
             }
 
             else -> Unit

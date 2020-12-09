@@ -37,7 +37,8 @@ dependencies {
     implementation("io.quarkus:quarkus-arc")
     implementation("io.quarkus:quarkus-smallrye-openapi")
     implementation("org.jetbrains.kotlin:kotlin-reflect:1.4.10")
-
+    implementation("io.quarkus:quarkus-resteasy-multipart")
+    implementation("commons-io:commons-io:2.8.0")
     testImplementation("io.github.serpro69:kotlin-faker:1.4.1")
     testImplementation("io.quarkus:quarkus-junit5")
     testImplementation("io.quarkus:quarkus-junit5-mockito")

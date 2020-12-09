@@ -22,8 +22,9 @@ class CustomLoggingWebFilter : Filter {
         val httpServletRequest = request as HttpServletRequest
         val uri = httpServletRequest.requestURI
         val method = httpServletRequest.method
+        val contentLength = httpServletRequest.contentLength
 
-        LOG.info("[URI: $uri, method: $method, query: ${request.queryString} ]")
+        LOG.info("[URI: $uri, method: $method, query: ${request.queryString}, content-length: $contentLength ]")
         chain.doFilter(request, response)
     }
 

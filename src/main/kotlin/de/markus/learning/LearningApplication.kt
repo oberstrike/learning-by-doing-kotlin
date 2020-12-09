@@ -13,6 +13,7 @@ import org.eclipse.microprofile.openapi.annotations.media.Schema
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponse
 import org.eclipse.microprofile.openapi.annotations.security.SecurityRequirement
 import org.eclipse.microprofile.openapi.annotations.security.SecurityScheme
+import org.eclipse.microprofile.openapi.annotations.servers.Server
 import javax.ws.rs.core.Application
 import javax.ws.rs.core.MediaType
 
@@ -26,8 +27,6 @@ class Main {
             Quarkus.run(LearningApplication::class.java, *args)
         }
     }
-
-
 }
 
 @OpenAPIDefinition(
@@ -50,18 +49,6 @@ class Main {
                             type = SecuritySchemeType.HTTP,
                             scheme = "bearer",
                             bearerFormat = "JWT"
-                    )
-                ],
-                responses = [
-                    APIResponse(
-                            name = "Error",
-                            description = "A Error-Object",
-                            content = [
-                                Content(
-                                        mediaType = MediaType.APPLICATION_JSON,
-                                        schema = Schema(implementation = ResponseError::class)
-                                )
-                            ]
                     )
                 ]
         ),
